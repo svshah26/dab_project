@@ -44,24 +44,26 @@ targets:
   test:
     mode: production
     workspace:
-      host: https://adb-7405615642335264.4.azuredatabricks.net
+      host: https://adb-7405616190047052.12.azuredatabricks.net/
       # We explicitly deploy to /Workspace/Users/sam7645shah_gmail.com#ext#@sam7645shahgmail.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog: no
-      schema: prod
+      catalog:
+        default: "citibike_test"
+      
     permissions:
       - user_name: sam7645shah_gmail.com#ext#@sam7645shahgmail.onmicrosoft.com
         level: CAN_MANAGE
   prod:
     mode: production
     workspace:
-      host: https://adb-7405613514473085.5.azuredatabricks.net
+      host: https://adb-7405608822547512.12.azuredatabricks.net/
       # We explicitly deploy to /Workspace/Users/sam7645shah_gmail.com#ext#@sam7645shahgmail.onmicrosoft.com to make sure we only have a single copy.
       root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog: no
-      schema: prod
+      catalog:
+        default: "citibike_prod"
+      
     permissions:
       - user_name: sam7645shah_gmail.com#ext#@sam7645shahgmail.onmicrosoft.com
         level: CAN_MANAGE
