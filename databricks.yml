@@ -19,8 +19,7 @@ sync:
 variables:
   catalog:
     default: "citibike_dev"
-  schema:
-    description: The schema to use
+
   dev_flag:
     description: Flag for dev environment
     default: true
@@ -36,11 +35,10 @@ targets:
     workspace:
       host: https://adb-3697574787118981.1.azuredatabricks.net
       
-    variables:
-      catalog: "citibike_dev"
-      schema: dev
+  
     presets:
       artifacts_dynamic_version: true
+
   test:
     mode: production
     workspace:
@@ -50,10 +48,15 @@ targets:
     variables:
       catalog:
         default: "citibike_test"
+      dev_flag:
+        default: false
       
     permissions:
-      - user_name: sam7645shah_gmail.com#ext#@sam7645shahgmail.onmicrosoft.com
+      - service_principal_name: db8f4004-b91f-4cb2-a532-f857c29f0eb6
         level: CAN_MANAGE
+    run_as:
+      service_principal_name: db8f4004-b91f-4cb2-a532-f857c29f0eb6
+
   prod:
     mode: production
     workspace:
@@ -63,7 +66,11 @@ targets:
     variables:
       catalog:
         default: "citibike_prod"
+      dev_flag:
+        default: false
       
     permissions:
-      - user_name: sam7645shah_gmail.com#ext#@sam7645shahgmail.onmicrosoft.com
+      - service_principal_name: eee9a86a-955e-4378-adfd-7cc7f1901f11
         level: CAN_MANAGE
+    run_as:
+      service_principal_name: eee9a86a-955e-4378-adfd-7cc7f1901f11
