@@ -5,11 +5,15 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   cd-deploy-test:
     name: Deploy to TEST
     runs-on: ubuntu-latest
     environment: test
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,19 +21,18 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
-      - name: Install Databricks CLI
-        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
 
       - name: Install Dependencies
         run: |
-          pip install --upgrade pip
-          pip install setuptools wheel
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel
 
       - name: Configure Databricks
         run: |
-          # write out the profile (here called "TEST")
           cat <<EOF > ~/.databrickscfg
           [TEST]
           host = https://adb-7405616190047052.12.azuredatabricks.net/
@@ -38,7 +41,7 @@ jobs:
           azure_client_secret = ${{ secrets.AZURE_CLIENT_SECRET }}
           EOF
 
-      - name: Deply to TEST
+      - name: Deploy to TEST
         run: |
           databricks bundle deploy \
             --target test \
@@ -49,6 +52,7 @@ jobs:
     needs: cd-deploy-test
     runs-on: ubuntu-latest
     environment: prod
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -56,19 +60,18 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
-      - name: Install Databricks CLI
-        run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
+      - name: Setup Databricks CLI
+        uses: databricks/setup-cli@main
 
       - name: Install Dependencies
         run: |
-          pip install --upgrade pip
-          pip install setuptools wheel
+          python -m pip install --upgrade pip
+          python -m pip install setuptools wheel
 
       - name: Configure Databricks
         run: |
-          # write out the profile (here called "PROD")
           cat <<EOF > ~/.databrickscfg
           [PROD]
           host = https://adb-7405608822547512.12.azuredatabricks.net/
@@ -77,18 +80,8 @@ jobs:
           azure_client_secret = ${{ secrets.AZURE_CLIENT_SECRET }}
           EOF
 
-      - name: Deply to PROD
+      - name: Deploy to PROD
         run: |
           databricks bundle deploy \
             --target prod \
             --profile PROD
-
-
-
-
-
-
-
-
-
-          
