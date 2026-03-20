@@ -11,7 +11,6 @@ variables:
       spark_env_vars:
         PYSPARK_PYTHON: /databricks/python3/bin/python3
       data_security_mode: DATA_SECURITY_MODE_DEDICATED
-      runtime_engine: PHOTON
       kind: CLASSIC_PREVIEW
       is_single_node: true
   f4_sn:

@@ -13,7 +13,7 @@ resources:
               processed_timestamp: "{{job.start_time.iso_datetime}}"
               catalog: "${var.catalog}"
             source: WORKSPACE
-          existing_cluster_id: 0315-173828-56n7u183
+          job_cluster_key: ds4_v3_sn
         - task_key: 02_silver_citibike
           depends_on:
             - task_key: 01_bronze_citibike
@@ -26,7 +26,9 @@ resources:
               processed_timestamp: "{{job.start_time.iso_datetime}}"
               catalog: "${var.catalog}"
             source: WORKSPACE
-          existing_cluster_id: 0315-173828-56n7u183
+          job_cluster_key: ds4_v3_sn
+          libraries:
+            - whl: ../dist/*.whl
         - task_key: 03_gold_citibike_daily_summary
           depends_on:
             - task_key: 02_silver_citibike
@@ -35,7 +37,7 @@ resources:
             source: WORKSPACE
             base_parameters:
               catalog: "${var.catalog}"
-          existing_cluster_id: 0315-173828-56n7u183
+          job_cluster_key: ds4_v3_sn
         - task_key: 03_gold_citibike_daily_station_performance
           depends_on:
             - task_key: 02_silver_citibike
@@ -44,6 +46,10 @@ resources:
             source: WORKSPACE
             base_parameters:
               catalog: "${var.catalog}"
+              job_cluster_key: ds4_v3_sn
+      job_clusters:
+          - job_cluster_key: ds4_v3_sn
+            new_cluster: "${var.ds4_v3_sn}"
       queue:
         enabled: true
       performance_target: PERFORMANCE_OPTIMIZED
